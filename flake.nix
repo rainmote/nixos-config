@@ -20,18 +20,24 @@
       inherit system;
 
       modules = [
-        ./configuration.nix
+        # Host-specific configuration
+        ./hosts/nixos/desktop.nix
 
+        # Home Manager integration
         home-manager.nixosModules.home-manager
 
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
 
-          home-manager.users.one = import ./home.nix;
+          home-manager.users.one = {
+            imports = [
+              ./home.nix          # User global settings
+              ./modules/shared    # Shared modules (cross-platform)
+            ];
+          };
         }
       ];
     };
   };
 }
-

@@ -1,0 +1,6 @@
+# Darwin (macOS) host configurations
+# Add machine-specific configs here, e.g.:
+# - macbook.nix for a MacBook
+# - imac.nix for an iMac
+#
+# Each file should import the darwin modules from ../../modules/darwin/
