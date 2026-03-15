@@ -12,5 +12,11 @@
     lazydocker
     nodejs_24
     nodePackages.nrm
+    # Networking and system tools
+    dnsutils # dig, nslookup
+    net-tools # ifconfig, netstat
+    inetutils # telnet, ftp
+    lsof
+    procps # ps, top
   ];
 }
