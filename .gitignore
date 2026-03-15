@@ -1,0 +1,9 @@
+result
+result-*
+.direnv/
+.venv/
+node_modules/
+dist/
+build/
+*.swp
+*~

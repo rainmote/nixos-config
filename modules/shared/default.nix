@@ -10,6 +10,7 @@
     ./shell/zsh.nix
     ./shell/tmux.nix
     ./editors/nvim.nix
+    ./desktop
   ];
 
   # Session variables and PATH
