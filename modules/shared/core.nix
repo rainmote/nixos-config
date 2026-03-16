@@ -18,5 +18,6 @@
     inetutils # telnet, ftp
     lsof
     procps # ps, top
+    openssl
   ];
 }

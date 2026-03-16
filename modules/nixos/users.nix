@@ -14,6 +14,7 @@
     vim
     wget
     curl
+    openssl
     docker
     docker-compose
   ];
