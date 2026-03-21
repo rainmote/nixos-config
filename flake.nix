@@ -16,16 +16,14 @@
 
   outputs = { self, nixpkgs, home-manager, niri, noctalia, noctalia-qs, ... }:
 
-  let
-    system = "x86_64-linux";
-  in
   {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      inherit system;
-
       modules = [
         # Host-specific configuration
         ./hosts/nixos/desktop.nix
+
+        # System platform
+        { nixpkgs.hostPlatform = "x86_64-linux"; }
 
         # Home Manager integration
         home-manager.nixosModules.home-manager
