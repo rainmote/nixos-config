@@ -34,5 +34,20 @@
   # Unlock gnome-keyring on login
   services.gnome.gnome-keyring.enable = true;
 
+  services.xserver.videoDrivers = ["nvidia"];
+  nixpkgs.config.allowUnfree = true;
+  #nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+  #  "nvidia-x11"
+  #];
+       
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    powerManagement.enable = true;
+  };
+
   system.stateVersion = "25.11";
 }
+
+

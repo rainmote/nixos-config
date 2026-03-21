@@ -23,8 +23,11 @@
     "${config.home.homeDirectory}/.local/bin"
   ];
 
-  home.file.".npmrc".text = ''
-    registry=https://registry.npmmirror.com/
-    prefix=${config.home.homeDirectory}/.npm-global
-  '';
+  home.file.".npmrc" = {
+    text = ''
+      registry=https://registry.npmmirror.com/
+      prefix=${config.home.homeDirectory}/.npm-global
+    '';
+    force = true;
+  };
 }

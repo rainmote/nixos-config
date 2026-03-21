@@ -12,19 +12,23 @@ in
   home.packages = with pkgs; [
     # Desktop shell and compositor-related
     noctalia-qs.packages.${system}.default
-    
+
     # Mainstream components
     swaynotificationcenter
     swww
     swaybg
     rofi
     kitty
-    
+
+    # Wallpaper tools
+    jq
+    curl
+
     # Theme/Icons
     catppuccin-gtk
     catppuccin-kvantum
     papirus-icon-theme
-    
+
     # Utilities
     wl-clipboard
     libnotify
@@ -37,6 +41,12 @@ in
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
   ];
+
+  # Install wallpaper script to ~/.local/bin/
+  home.file.".local/bin/niri-wallpaper.sh" = {
+    source = ./niri-wallpaper.sh;
+    executable = true;
+  };
 
   # Niri configuration
   programs.niri.settings = {
@@ -123,6 +133,7 @@ in
       { command = [ "swaybg" "-c" "#1e1e2e" ]; }
       { command = [ "noctalia-shell" ]; }
       { command = [ "swww-daemon" ]; }
+      { command = [ "bash" "/home/one/.local/bin/niri-wallpaper.sh" ]; }
       { command = [ "swaync" ]; }
     ];
   };
@@ -134,7 +145,7 @@ in
     settings = {
       background_opacity = "0.8";
       font_family = "FiraCode Nerd Font";
-      font_size = 11;
+      font_size = 14;
       window_padding_width = 10;
     };
   };

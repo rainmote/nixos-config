@@ -7,6 +7,12 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
+    shellAliases = {
+      claudex = "claude --allow-dangerously-skip-permissions";
+      codexx = "codex -s danger-full-access";
+      geminix = "gemini --yolo";
+    };
+
     # Oh My Zsh configuration (plugins only, starship handles prompt)
     oh-my-zsh = {
       enable = true;

@@ -14,7 +14,19 @@ in
       calendarSupport = true;
     };
     settings = {
-      bar.position = "top";
+      bar = {
+        position = "top";
+        floating = true;
+        backgroundOpacity = 0.85;
+      };
+      general = {
+        animationSpeed = 1.0;
+        radiusRatio = 1.0;
+      };
+      colorSchemes = {
+        darkMode = true;
+        useWallpaperColors = true;
+      };
     };
   };
 }

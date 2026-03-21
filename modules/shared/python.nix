@@ -12,5 +12,7 @@
   # uv environment variables
   home.sessionVariables = {
     UV_CACHE_DIR = "${config.xdg.cacheHome}/uv";
+    # Aliyun PyPI mirror
+    UV_INDEX_URL = "https://mirrors.aliyun.com/pypi/simple/";
   };
 }

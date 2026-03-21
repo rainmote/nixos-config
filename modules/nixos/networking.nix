@@ -2,11 +2,6 @@
 
 {
   networking.networkmanager.enable = true;
-  networking.networkmanager.dns = "none";
-  networking.nameservers = [
-    "192.168.90.9"
-    "223.5.5.5"
-  ];
 
   services.openssh = {
     enable = true;
