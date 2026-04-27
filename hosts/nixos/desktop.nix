@@ -1,9 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, dms, niri, ... }:
 
 {
   imports = [
     ../../hardware-configuration.nix
     ../../modules/nixos
+    dms.nixosModules.greeter
+    niri.nixosModules.niri
   ];
 
   # Host-specific boot configuration
@@ -17,18 +19,14 @@
   # Enable hardware graphics support
   hardware.graphics.enable = true;
 
-  # Enable niri
+  # Niri compositor (NixOS level for DankGreeter)
   programs.niri.enable = true;
 
-  # Enable greetd display manager
-  services.greetd = {
+  # DankGreeter display manager
+  programs.dank-material-shell.greeter = {
     enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri";
-        user = "greeter";
-      };
-    };
+    compositor.name = "niri";
+    configHome = "/home/one";
   };
 
   # Unlock gnome-keyring on login
@@ -49,5 +47,3 @@
 
   system.stateVersion = "25.11";
 }
-
-

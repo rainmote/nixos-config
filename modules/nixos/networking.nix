@@ -2,6 +2,7 @@
 
 {
   networking.networkmanager.enable = true;
+  networking.networkmanager.dns = "none";
 
   services.openssh = {
     enable = true;

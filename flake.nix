@@ -9,15 +9,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri.url = "github:sodiboo/niri-flake";
-    noctalia.url = "github:noctalia-dev/noctalia-shell";
-    noctalia-qs.url = "github:noctalia-dev/noctalia-qs";
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = { self, nixpkgs, home-manager, niri, noctalia, noctalia-qs, ... }:
+  outputs = { self, nixpkgs, home-manager, dms, dgop, niri, ... }:
 
   {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      inherit system;
+
+      specialArgs = { inherit dms niri; };
+
       modules = [
         # Host-specific configuration
         ./hosts/nixos/desktop.nix
@@ -27,18 +43,16 @@
 
         # Home Manager integration
         home-manager.nixosModules.home-manager
-        noctalia.nixosModules.default
 
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { niri-flake = niri; inherit noctalia noctalia-qs; };
+          home-manager.extraSpecialArgs = { inherit dms dgop niri; };
 
           home-manager.users.one = {
             imports = [
               ./home.nix          # User global settings
               ./modules/shared    # Shared modules (cross-platform)
-              niri.homeModules.niri
             ];
           };
         }
