@@ -4,6 +4,7 @@
   imports = [
     ../../hardware-configuration.nix
     ../../modules/nixos
+    ../../modules/nixos/nvidia.nix
     dms.nixosModules.greeter
     niri.nixosModules.niri
   ];
@@ -12,7 +13,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos";
+  networking.hostName = "desktop2";
 
   time.timeZone = "Asia/Shanghai";
 
@@ -28,19 +29,6 @@
 
   # Unlock gnome-keyring on login
   services.gnome.gnome-keyring.enable = true;
-
-  services.xserver.videoDrivers = ["nvidia"];
-  nixpkgs.config.allowUnfree = true;
-  #nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-  #  "nvidia-x11"
-  #];
-       
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = false;
-    powerManagement.enable = true;
-  };
 
   system.stateVersion = "25.11";
 }

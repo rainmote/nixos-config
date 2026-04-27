@@ -28,4 +28,10 @@
   };
 
   programs.starship.enable = true;
+
+  # direnv with nix integration
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }

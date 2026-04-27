@@ -19,6 +19,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    danksearch = {
+      url = "github:AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,13 +31,14 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, dms, dgop, niri, ... }:
+  outputs = { self, nixpkgs, home-manager, dms, dgop, danksearch, niri, ... }:
 
   {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      inherit system;
+    nixosConfigurations = {
+      nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
 
-      specialArgs = { inherit dms niri; };
+        specialArgs = { inherit dms niri; };
 
       modules = [
         # Host-specific configuration
@@ -41,22 +47,47 @@
         # System platform
         { nixpkgs.hostPlatform = "x86_64-linux"; }
 
-        # Home Manager integration
-        home-manager.nixosModules.home-manager
+          home-manager.nixosModules.home-manager
 
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit dms dgop niri; };
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit dms dgop danksearch niri; };
 
-          home-manager.users.one = {
-            imports = [
-              ./home.nix          # User global settings
-              ./modules/shared    # Shared modules (cross-platform)
-            ];
-          };
-        }
-      ];
+            home-manager.users.one = {
+              imports = [
+                ./home.nix
+                ./modules/shared
+              ];
+            };
+          }
+        ];
+      };
+
+      desktop2 = nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = { inherit dms niri; };
+
+        modules = [
+          ./hosts/nixos/desktop2.nix
+
+          home-manager.nixosModules.home-manager
+
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit dms dgop danksearch niri; };
+
+            home-manager.users.one = {
+              imports = [
+                ./home.nix
+                ./modules/shared
+              ];
+            };
+          }
+        ];
+      };
     };
   };
 }

@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  # Allow proprietary packages
+  nixpkgs.config.allowUnfree = true;
+
   nix.settings = {
     substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store"

@@ -5,6 +5,7 @@
 
   imports = [
     ./docker.nix
+    ./i18n.nix
     ./nix.nix
     ./networking.nix
     ./users.nix
