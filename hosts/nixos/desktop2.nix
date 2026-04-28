@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../hardware-configuration.nix
+    ./hardware-configuration-desktop2.nix
     ../../modules/nixos
     ../../modules/nixos/nvidia.nix
     dms.nixosModules.greeter

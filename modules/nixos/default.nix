@@ -9,7 +9,14 @@
     ./nix.nix
     ./networking.nix
     ./users.nix
+    ./fonts.nix
   ];
+
+  # Graphics hardware support
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   # Noctalia prerequisites
   hardware.bluetooth.enable = true;

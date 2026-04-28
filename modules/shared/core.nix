@@ -20,6 +20,7 @@
     procps # ps, top
     openssl
     ghostty
+    alacritty
     # CLI tools
     yazi           # TUI file manager
     nh             # Nix helper
@@ -32,6 +33,8 @@
     slurp          # Area selector for grim
     wl-clipboard   # Clipboard manager for Wayland
     swappy         # Screenshot editor
+    # Style and fonts
+    apple-cursor   # macOS-style cursors
     # Wallpaper tools
     jq             # JSON processor
     libnotify      # Desktop notifications

@@ -36,7 +36,7 @@
   {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
 
         specialArgs = { inherit dms niri; };
 
@@ -65,7 +65,7 @@
       };
 
       desktop2 = nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
 
         specialArgs = { inherit dms niri; };
 

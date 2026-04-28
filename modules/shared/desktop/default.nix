@@ -23,6 +23,15 @@
 
   # Niri screenshot keybind
   programs.niri.settings = {
+    outputs = {
+      # 这里的 "Virtual-1" 是虚拟机常见的显示器名称，强制设置 2K 分辨率
+      "Virtual-1" = {
+        mode = { width = 2560; height = 1440; };
+        # 设置缩放为 1.2，模拟 macOS 的 HiDPI (Retina) 效果
+        scale = 1.2;
+      };
+    };
+
     input = {
       keyboard = {
         xkb = {
@@ -55,16 +64,23 @@
   # Variety wallpaper changer configuration
   xdg.configFile."variety/variety.conf".text = ''
     [variety]
-    sources = wallhaven
-    wallhaven_url = https://wallhaven.cc/search?categories=111&purity=100&atleast=3840x2160&topRange=6M&sorting=hot&order=desc
-    wallhaven_url2 = https://wallhaven.cc/search?categories=110&purity=100&atleast=3840x2160&sorting=random&order=desc&seed=EZTNL1
-    download_folder = ${config.home.homeDirectory}/Pictures/Wallpapers
     change_enabled = True
-    change_interval = 30
-    set_command = swww img %f --transition-type random --transition-duration 1
+    change_interval = 1800
+    download_folder = ${config.home.homeDirectory}/Pictures/Wallpapers
+    set_command = "${pkgs.swww}/bin/swww img \"%f\" --transition-type random --transition-duration 1"
+    # Ensure variety uses the set_command
+    users_set_command = True
+    # Desktop environment detection bypass
+    set_wallpaper_script = True
+    
     poses_enabled = True
     smart_notice_enabled = True
     smart_fetch_enabled = True
+
+    [sources]
+    src1 = True|folder|${config.home.homeDirectory}/Pictures/Wallpapers
+    src2 = True|wallhaven|https://wallhaven.cc/search?categories=110&purity=100&atleast=3840x2160&sorting=random&order=desc&seed=EZTNL1&page=1
+    src3 = True|wallhaven|https://wallhaven.cc/search?categories=111&purity=100&atleast=3840x2160&topRange=6M&sorting=hot&order=desc&page=1
   '';
 
   # swww daemon for wallpaper (systemd user service)
@@ -77,6 +93,8 @@
     Service = {
       ExecStart = "${pkgs.swww}/bin/swww-daemon";
       Restart = "on-failure";
+      # Ensure WAYLAND_DISPLAY is available
+      Environment = [ "PATH=${pkgs.swww}/bin" ];
     };
     Install = {
       WantedBy = [ "graphical-session.target" ];
@@ -91,8 +109,12 @@
       After = [ "graphical-session.target" "swww-daemon.service" ];
     };
     Service = {
-      ExecStart = "${pkgs.variety}/bin/variety";
+      ExecStart = "${pkgs.variety}/bin/variety --not-show-config";
       Restart = "on-failure";
+      # Important for Wayland/Niri
+      Environment = [ 
+        "PATH=${lib.makeBinPath [ pkgs.variety pkgs.swww pkgs.coreutils pkgs.procps ]}"
+      ];
     };
     Install = {
       WantedBy = [ "graphical-session.target" ];
