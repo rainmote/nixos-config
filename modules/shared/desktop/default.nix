@@ -48,40 +48,74 @@
         "sh" "-c" "grim -g \"$(slurp)\" - | swappy -f -"
       ];
     };
+
+    spawn-at-startup = [
+      { command = [ "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" ]; }
+      { command = [ "systemctl" "--user" "start" "graphical-session.target" ]; }
+    ];
   };
 
   # Swappy configuration
-  xdg.configFile."swappy/config".text = ''
-    [Default]
-    save_dir=${config.home.homeDirectory}/Pictures/Screenshots
-    save_filename_format=swappy-%Y-%m-%d-%H-%M-%S.png
-    show_panel=true
-    line_size_hint=3
-    text_font=sans
-    text_size=20
-  '';
+  xdg.configFile."swappy/config" = {
+    text = ''
+      [Default]
+      save_dir=${config.home.homeDirectory}/Pictures/Screenshots
+      save_filename_format=swappy-%Y-%m-%d-%H-%M-%S.png
+      show_panel=true
+      line_size_hint=3
+      text_font=sans
+      text_size=20
+    '';
+    force = true;
+  };
 
   # Variety wallpaper changer configuration
-  xdg.configFile."variety/variety.conf".text = ''
-    [variety]
-    change_enabled = True
-    change_interval = 1800
-    download_folder = ${config.home.homeDirectory}/Pictures/Wallpapers
-    set_command = "${pkgs.swww}/bin/swww img \"%f\" --transition-type random --transition-duration 1"
-    # Ensure variety uses the set_command
-    users_set_command = True
-    # Desktop environment detection bypass
-    set_wallpaper_script = True
-    
-    poses_enabled = True
-    smart_notice_enabled = True
-    smart_fetch_enabled = True
+  xdg.configFile."variety/variety.conf" = {
+    text = ''
+      [variety]
+      change_enabled = True
+      change_interval = 1800
+      download_folder = ${config.home.homeDirectory}/Pictures/Wallpapers
+      # Use the script for setting wallpaper
+      set_wallpaper_script = True
+      # Fallback/Custom command
+      set_command = "${pkgs.swww}/bin/swww img \"%f\" --transition-type random --transition-duration 1"
+      # Ensure variety uses the script/command
+      users_set_command = True
+      
+      poses_enabled = True
+      smart_notice_enabled = True
+      smart_fetch_enabled = True
 
-    [sources]
-    src1 = True|folder|${config.home.homeDirectory}/Pictures/Wallpapers
-    src2 = True|wallhaven|https://wallhaven.cc/search?categories=110&purity=100&atleast=3840x2160&sorting=random&order=desc&seed=EZTNL1&page=1
-    src3 = True|wallhaven|https://wallhaven.cc/search?categories=111&purity=100&atleast=3840x2160&topRange=6M&sorting=hot&order=desc&page=1
-  '';
+      [sources]
+      src1 = True|folder|${config.home.homeDirectory}/Pictures/Wallpapers
+      src2 = True|wallhaven|https://wallhaven.cc/search?categories=110&purity=100&atleast=3840x2160&sorting=random&order=desc&seed=EZTNL1&page=1
+      src3 = True|wallhaven|https://wallhaven.cc/search?categories=111&purity=100&atleast=3840x2160&topRange=6M&sorting=hot&order=desc&page=1
+    '';
+    force = true;
+  };
+
+  # Variety set_wallpaper script for Wayland/swww
+  xdg.configFile."variety/scripts/set_wallpaper" = {
+    text = ''
+      #!/usr/bin/env bash
+      # Variety calls this script with the wallpaper path as $1
+      
+      if [[ -z "$1" ]]; then
+          exit 1
+      fi
+
+      # Ensure swww-daemon is running
+      if ! ${pkgs.procps}/bin/pgrep -x "swww-daemon" > /dev/null; then
+          ${pkgs.swww}/bin/swww-daemon &
+          sleep 1
+      fi
+
+      ${pkgs.swww}/bin/swww img "$1" --transition-type random --transition-duration 1
+    '';
+    executable = true;
+    force = true;
+  };
 
   # swww daemon for wallpaper (systemd user service)
   systemd.user.services.swww-daemon = {

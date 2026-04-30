@@ -1,6 +1,7 @@
 # GEMINI.md - NixOS Configuration Guide
 
 This file provides context and instructions for the Gemini CLI when working within this NixOS configuration repository.
+dms is mean dank-material-shell
 
 ## Project Overview
 

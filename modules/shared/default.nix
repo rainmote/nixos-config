@@ -108,4 +108,18 @@
     '';
     force = true;
   };
+
+  # Fcitx5 global configuration (Trigger/Switch Key)
+  home.file.".config/fcitx5/config" = {
+    text = ''
+      [Hotkey]
+      # Trigger Keys (Toggle between current and first input method)
+      TriggerKeys=Control+space
+      
+      # Switch Key (Cycle through all input methods)
+      # Setting this to Control+Shift as requested
+      SwitchKey=Control+Shift
+    '';
+    force = true;
+  };
 }

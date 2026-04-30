@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  # Set system default locale to Chinese
+  i18n.defaultLocale = "zh_CN.UTF-8";
+
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
