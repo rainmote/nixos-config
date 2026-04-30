@@ -27,8 +27,7 @@
       # 这里的 "Virtual-1" 是虚拟机常见的显示器名称，强制设置 2K 分辨率
       "Virtual-1" = {
         mode = { width = 2560; height = 1440; };
-        # 设置缩放为 1.2，模拟 macOS 的 HiDPI (Retina) 效果
-        scale = 1.2;
+        scale = 2.0;
       };
     };
 
